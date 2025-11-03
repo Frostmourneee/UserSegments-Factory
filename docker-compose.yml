@@ -2,7 +2,7 @@ services:
   postgres_db:
     build:
       ./postgres
-    container_name: postgres_db
+    container_name: ${POSTGRES_CONTAINER_NAME}
     env_file:
       - .env
     environment:
@@ -14,6 +14,33 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./config:/opt/config
+    networks:
+      - etl-network
+
+  airflow:
+    build:
+      ./airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:5432/${POSTGRES_DB}
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "true"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./config:/opt/airflow/config
+      - ./postgres/data_generator.py:/opt/airflow/data_generator.py
+    ports:
+      - "${AIRFLOW_PORT}:8080"
+    command: airflow standalone
+    depends_on:
+      - postgres_db
+    networks:
+      - etl-network
 
 volumes:
   postgres_data:
+
+networks:
+  etl-network:
+    driver: bridge

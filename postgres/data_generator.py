@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/opt')
 from config.settings import get_settings
 import psycopg2
 import random
@@ -13,13 +11,14 @@ def generate_data():
         dbname=settings.POSTGRES_DB,
         user=settings.POSTGRES_USER,
         password=settings.POSTGRES_PASSWORD,
-        host=settings.POSTGRES_HOST,
+        host=settings.POSTGRES_CONTAINER_NAME,
         port=settings.POSTGRES_PORT
     )
     cursor = conn.cursor()
 
     fake = Faker()
 
+    # Добавка в таблицу пользователей
     for _ in range(random.randint(5, 10)):
         cursor.execute("""
             INSERT INTO users (email, registration_date, region)
@@ -30,6 +29,7 @@ def generate_data():
     cursor.execute("SELECT user_id FROM users")
     user_ids = [row[0] for row in cursor.fetchall()]
 
+    # Добавка в таблицу заказов
     for _ in range(random.randint(10, 20)):
         user_id = random.choice(user_ids)
         cursor.execute("""
@@ -39,6 +39,7 @@ def generate_data():
               round(random.uniform(20, 500), 2),
               random.choice(['completed', 'pending', 'cancelled'])))
 
+    # Добавка в таблицу активностей пользователей
     for _ in range(random.randint(50, 100)):
         user_id = random.choice(user_ids)
         cursor.execute("""

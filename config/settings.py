@@ -13,7 +13,7 @@ class DefaultSettings(BaseSettings):
     POSTGRES_USER: str = os.getenv("POSTGRES_USER", "airflow")
     POSTGRES_PORT: int = int(os.getenv("POSTGRES_PORT", "5432"))
     POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "airflow")
-
+    POSTGRES_CONTAINER_NAME: str = os.getenv("POSTGRES_CONTAINER_NAME", "postgres_db")
 
 def get_settings() -> DefaultSettings:
     return DefaultSettings()
