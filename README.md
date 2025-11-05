@@ -25,7 +25,7 @@ Data Generator → Spark ETL script → Data Quality Checker
 
 ### Аналитические витрины
 
-В процессе ETL формируются две основные витрины:
+В процессе ETL формируются:
 
 #### 1. **user_segments** - пользовательские сегменты
 ```sql
