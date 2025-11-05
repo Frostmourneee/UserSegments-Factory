@@ -18,7 +18,8 @@
 | **Airflow Orchestrator** | • Оркестрация задач<br>• Мониторинг выполнения                                                                             |
 | **Data Generator** | • Создание синтетических данных<br>• Наполнение сырых таблиц                                                               |
 | **Spark Cluster** | • Построение аналитических витрин<br>• Сегментация пользователей                                                           |
-| **Data Quality Checker** | • Валидация данных<br>• Проверка целостности<br/>                                                                          |                                      |
+| **Data Quality Checker** | • Валидация данных<br>• Проверка целостности<br/>                                                                          |
+
 Airflow Orchestrator (запуск каждые 2 минуты):
 Data Generator → Spark ETL script → Data Quality Checker
 
