@@ -62,9 +62,6 @@ git clone <repository-url>
 # Создаем .env файл с настройками
 make env
 
-# Собираем образы
-make build
-
 # Запускаем всю инфраструктуру
 make up
 ```
